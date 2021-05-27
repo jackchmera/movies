@@ -23,8 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'movies'], function () {
     Route::get('/', [MovieController::class, 'index']);
     Route::post('add', [MovieController::class, 'add']);
-    Route::get('edit/{id}', [MovieController::class, 'edit']);
-    Route::post('update/{id}', [MovieController::class, 'update']);
-    Route::delete('delete/{id}', [MovieController::class, 'delete']);
-    Route::post('rent/{id}/{user}', [RentalController::class, 'rent']);
+    Route::get('edit/{movie}', [MovieController::class, 'edit']);
+    Route::post('update/{movie}', [MovieController::class, 'update']);
+    Route::delete('delete/{movie}', [MovieController::class, 'delete']);
+    Route::post('rent', [RentalController::class, 'rent']);
 });

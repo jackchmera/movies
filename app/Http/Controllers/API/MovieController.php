@@ -15,8 +15,7 @@ class MovieController extends Controller
      */
     public function index() : array
     {
-        // Model::all has been overwritten by Movie model.
-        return $movies = Movie::all();
+        return Movie::getAllMoviesAndNotes();
     }
 
     /**
@@ -27,58 +26,57 @@ class MovieController extends Controller
      * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function add(Request $request)
-    {   
-        $movie = new Movie([
-            'title'        => $request->input('title'),
-            'release_year' => $request->input('release_year'),
-            'cover'        => $request->input('cover')
-        ]);
-        $movie->save();
+    {
+        Movie::create($request->validate([
+            'title'        => 'required|string',
+            'release_year' => 'required|numeric',
+            'cover'        => 'required|url'
+        ]));
         
-        return response()->json('The movie successfully added');
+        return response()->json('The movie successfully added.');
     }
 
     /**
-     * Gets movie data.
+     * Gets movie data to edit.
      * 
-     * @param int $id
+     * @param Movie $movie
      * 
      * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
-    public function edit(int $id)
+    public function edit(Movie $movie)
     {
-        $movie = Movie::find($id);
         return response()->json($movie);
     }
 
     /**
      * Updates movie.
      * 
-     * @param int       $id
-     * @param Request   $request
+     * @param Movie   $movie
+     * @param Request $request
      * 
      * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
-    public function update(int $id, Request $request)
+    public function update(Movie $movie, Request $request)
     {
-        $movie = Movie::find($id);
-        $movie->update($request->all());
-
-        return response()->json('The movie successfully updated');
+        $movie->update($request->validate([
+            'title'        => 'required|string',
+            'release_year' => 'required|numeric',
+            'cover'        => 'required|url'
+        ]));
+        
+        return response()->json('The movie successfully updated.');
     }
 
     /**
      * Deletes movie.
      * 
-     * @param  int $id
+     * @param Movie $movie
      * 
      * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
-    public function delete(int $id)
+    public function delete(Movie $movie)
     {
-        $movie = Movie::find($id);
         $movie->delete();
-
-        return response()->json('The movie successfully deleted');
+        return response()->json('The movie successfully deleted.');
     }
 }

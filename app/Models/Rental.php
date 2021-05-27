@@ -14,7 +14,5 @@ class Rental extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'movie_id', 'rental_date', 'return_date', 'note'
-    ];
+    protected $fillable = ['user_id', 'movie_id', 'rental_date', 'watched', 'note'];
 }

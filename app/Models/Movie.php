@@ -11,15 +11,13 @@ class Movie extends Model
 {
     use HasFactory;
     
-    protected $fillable = [
-        'title', 'release_year', 'cover'
-    ];
+    protected $fillable = ['title', 'release_year', 'cover'];
     
     /**
     * Prepare a date for array / JSON serialization.
     *
     * @param  \DateTimeInterface  $date
-     * 
+     *
     * @return string
     */
     protected function serializeDate(DateTimeInterface $date)
@@ -29,17 +27,12 @@ class Movie extends Model
     
     /**
      * Retrieves all movies and respective avg note.
-     * 
-     * @param array | string    $columns
-     * 
-     * @override
-     * 
+     *
      * @return array
      */
-    public static function all($columns = ['*']) : array
+    public static function getAllMoviesAndNotes() : array
     {
-        return DB::table('movies')
-            ->select('movies.id', 'movies.title', 'movies.release_year', 'movies.cover', DB::raw('avg(rentals.note) as avg_note'))
+        return Movie::select('movies.id', 'movies.title', 'movies.release_year', 'movies.cover', DB::raw('avg(rentals.note) as avg_note'))
             ->leftJoin('rentals', 'movies.id', '=', 'rentals.movie_id')
             ->groupBy('movies.id')
             ->get()

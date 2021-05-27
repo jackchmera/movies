@@ -9,33 +9,22 @@ use Illuminate\Http\Request;
 class RentalController extends Controller
 {
     /**
-     * Add rental.
-     * 
-     * @param  int      $movieId
-     * @param  int      $userId
+     * Adds rental.
+     *
      * @param  Request  $request
-     * 
+     *
      * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
-    public function rent(int $movieId, int $userId, Request $request)
-    {   
-        $rental              = new Rental();
-        $rental->user_id     = $userId;
-        $rental->movie_id    = $movieId;
-        $rental->rental_date = $request->rental_date;
-        $rental->watched     = $request->watched;
-        $rental->note        = $request->note;
-        $rental->save();
+    public function rent(Request $request)
+    {
+        Rental::create($request->validate([
+            'user_id'     => 'required|numeric',
+            'movie_id'    => 'required|numeric',
+            'rental_date' => 'required|date',
+            'watched'     => 'required|date',
+            'note'        => 'required|numeric'
+        ]));
         
-        return response()->json('The rental data successfully added');
+        return response()->json('The rental data successfully added.');
     }
-    
-//    public function getAverageNote($id)
-//    {
-//        $averageNote = DB::table('rental')
-//            ->where(['user_id' => $id])
-//            ->avg('note');
-//        
-//        return $averageNote;
-//    }
 }
