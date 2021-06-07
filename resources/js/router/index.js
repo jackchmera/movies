@@ -7,6 +7,11 @@ import RentMovie from '../components/RentMovie';
 
 export const routes = [
     {
+        name: 'homepage',
+        path: '/',
+        component: Movies
+    },
+    {
         name: 'movies',
         path: '/movies',
         component: Movies

@@ -3,27 +3,7 @@
         <h4 class="text-center">Add movie</h4>
         <div class="row">
             <div class="col-md-6">
-                <div v-if="validationErrors" v-show="showErrors">
-                    <ul class="alert alert-danger">
-                        <li v-for="(value, key, index) in validationErrors">{{ value }}</li>
-                    </ul>
-                </div>
-                <form @submit.prevent="addMovie">
-                    <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" class="form-control" v-model="movie.title">
-                    </div>
-                    <div class="form-group">
-                        <label>Release year</label>
-                        <input type="number" min="1900" max="2099" step="1" class="form-control" v-model="movie.release_year">
-                    </div>
-                    <div class="form-group">
-                        <label>Cover (URL)</label>
-                        <input type="text" class="form-control" v-model="movie.cover">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add movie</button>
-                    <router-link to="/movies" class="btn btn-warning">Cancel</router-link>
-                </form>
+                <MovieForm :movie="movie" :action="addMovie" :errorList="errorList" button="Add movie" />
             </div>
             <div class="col-md-6">
                 <img alt="" :src="movie.cover" v-bind:style="{ width: imgWidth + '%' }"/>
@@ -33,13 +13,18 @@
 </template>
 
 <script>
+import MovieForm from './MovieForm.vue'
+    
 export default {
+    name: 'AddMovie',
+    components: {
+        MovieForm
+    },
     data() {
         return {
             imgWidth: 100,
             movie: {},
-            validationErrors: {},
-            showErrors: false
+            errorList: {}
         }
     },
     methods: {
@@ -50,18 +35,10 @@ export default {
                 })
                 .catch(error => {
                     if (error.response.status === 422){
-                        this.validationErrors = error.response.data.errors;
+                        this.errorList = error.response.data.errors;
                     }
                     console.error(error);
                 });
-        }
-    },
-    computed: {
-        validationErrors(){
-            let errors = Object.values(this.validationErrors);
-            errors = errors.flat();
-            this.showErrors = (errors != '') ? true : false;
-            return errors;
         }
     }
 //    beforeRouteEnter(to, from, next) {

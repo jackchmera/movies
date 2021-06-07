@@ -3,13 +3,7 @@
         <h4 class="text-center">Rent Movie</h4>
         <div class="row">
             <div class="col-md-6">
-                <div v-if="validationErrors" v-show="showErrors">
-                    <ul class="alert alert-danger">
-                        <li v-for="(value, key, index) in validationErrors">{{ value }}</li>
-                    </ul>
-                </div>
-                <!--<FormErrors :data="validationErrors" :showErrors="showErrors" />-->
-                <!--<FormErrors v-if="validationErrors" :validationErrors="validationErrors" :showErrors="showErrors" />-->
+                <FormErrors :errorList="errorList" />
                 <form @submit.prevent="rentMovie">
                     <div class="form-group">
                         <label>Title</label>
@@ -51,13 +45,13 @@
 </template>
 
 <script>
-//import FormErrors from './FormErrors.vue'
+import FormErrors from './FormErrors.vue'
 
 export default {
     name: 'RentMovie',
-//    components: {
-//        FormErrors
-//    },
+    components: {
+        FormErrors
+    },
     data() {
         return {
             imgWidth: 100,
@@ -65,8 +59,7 @@ export default {
             options: [
                 { text: 'Pick the note', value: '' }
             ],
-            validationErrors: {},
-            showErrors: false
+            errorList: {}
         }
     },
     created() {
@@ -95,18 +88,10 @@ export default {
             })
             .catch(error => {
                 if (error.response.status === 422){
-                    this.validationErrors = error.response.data.errors;
-                }
+                    this.errorList = error.response.data.errors;
+                }               
                 console.error(error);
             });
-        }
-    },
-    computed: {
-        validationErrors(){
-            let errors = Object.values(this.validationErrors);
-            errors = errors.flat();
-            this.showErrors = (errors != '') ? true : false;
-            return errors;
         }
     }
 //    beforeRouteEnter(to, from, next) {
