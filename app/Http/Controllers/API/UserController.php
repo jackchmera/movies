@@ -22,7 +22,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $credentials = [
-            'email' => $request->email,
+            'email'    => $request->email,
             'password' => $request->password,
         ];
 

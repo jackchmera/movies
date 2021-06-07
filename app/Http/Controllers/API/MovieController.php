@@ -27,11 +27,15 @@ class MovieController extends Controller
      */
     public function add(Request $request)
     {
-        Movie::create($request->validate([
-            'title'        => 'required|string',
-            'release_year' => 'required|numeric',
-            'cover'        => 'required|url'
-        ]));
+        Movie::create(
+            $request->validate(
+                [
+                    'title'        => 'required|string',
+                    'release_year' => 'required|numeric',
+                    'cover'        => 'required|url'
+                ]
+            )
+        );
         
         return response()->json('The movie successfully added.');
     }
@@ -58,11 +62,15 @@ class MovieController extends Controller
      */
     public function update(Movie $movie, Request $request)
     {
-        $movie->update($request->validate([
-            'title'        => 'required|string',
-            'release_year' => 'required|numeric',
-            'cover'        => 'required|url'
-        ]));
+        $movie->update(
+            $request->validate(
+                [
+                    'title'        => 'required|string',
+                    'release_year' => 'required|numeric',
+                    'cover'        => 'required|url'
+                ]
+            )
+        );
         
         return response()->json('The movie successfully updated.');
     }
