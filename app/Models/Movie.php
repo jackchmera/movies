@@ -5,25 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use DateTimeInterface;
 
 class Movie extends Model
 {
     use HasFactory;
     
     protected $fillable = ['title', 'release_year', 'cover'];
-
-    /**
-     * Prepare a date for array / JSON serialization.
-     *
-     * @param \DateTimeInterface $date
-     *
-     * @return string
-     */
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
     
     /**
      * Retrieves all movies and respective avg note.
